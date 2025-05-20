@@ -13,6 +13,25 @@ import (
 	"unicode"
 )
 
+// DataWithFilters godoc
+// @Summary Get filtered users
+// @Description Retrieve users with optional filters
+// @Tags users
+// @Accept json
+// @Produce json
+// @Param name query string false "Filter by name (partial match)"
+// @Param surname query string false "Filter by surname (partial match)"
+// @Param patronymic query string false "Filter by patronymic (partial match)"
+// @Param ageFrom query int false "Minimum age"
+// @Param ageTo query int false "Maximum age"
+// @Param sex query string false "Filter by sex (male/female)"
+// @Param country query string false "Filter by country code (partial match)"
+// @Param limit query int false "Pagination limit (default 10)"
+// @Param offset query int false "Pagination offset"
+// @Success 200 {object} map[string]interface{} "Success response"
+// @Failure 400 {object} map[string]interface{} "Bad request"
+// @Failure 500 {object} map[string]interface{} "Internal server error"
+// @Router / [get]
 func DataWithFilters(ctx *fiber.Ctx) error {
 	service, ok := ctx.Locals("enricherService").(*enricher.Enricher)
 	if !ok {
@@ -76,6 +95,18 @@ func DataWithFilters(ctx *fiber.Ctx) error {
 	})
 }
 
+// Delete godoc
+// @Summary Delete a user
+// @Description Delete user by ID
+// @Tags users
+// @Accept json
+// @Produce json
+// @Param request body models.DeleteUserPayload true "Delete request"
+// @Success 200 {object} map[string]interface{} "Success response"
+// @Failure 400 {object} map[string]interface{} "Bad request"
+// @Failure 404 {object} map[string]interface{} "User not found"
+// @Failure 500 {object} map[string]interface{} "Internal server error"
+// @Router /delete [post]
 func Delete(ctx *fiber.Ctx) error {
 	service, ok := ctx.Locals("enricherService").(*enricher.Enricher)
 	if !ok {
@@ -105,6 +136,18 @@ func Delete(ctx *fiber.Ctx) error {
 	})
 }
 
+// Edit godoc
+// @Summary Update a user
+// @Description Update user information
+// @Tags users
+// @Accept json
+// @Produce json
+// @Param request body models.EditUserPayload true "Update data"
+// @Success 200 {object} map[string]interface{} "Success response"
+// @Failure 400 {object} map[string]interface{} "Bad request"
+// @Failure 404 {object} map[string]interface{} "User not found"
+// @Failure 500 {object} map[string]interface{} "Internal server error"
+// @Router /edit [post]
 func Edit(ctx *fiber.Ctx) error {
 	service, ok := ctx.Locals("enricherService").(*enricher.Enricher)
 	if !ok {
@@ -156,6 +199,18 @@ func Edit(ctx *fiber.Ctx) error {
 	})
 }
 
+// Add godoc
+// @Summary Create a new user
+// @Description Add new user with data enrichment
+// @Tags users
+// @Accept json
+// @Produce json
+// @Param request body models.SaveUserPayload true "User data"
+// @Success 201 {object} map[string]interface{} "User created"
+// @Failure 400 {object} map[string]interface{} "Bad request"
+// @Failure 422 {object} map[string]interface{} "Validation error"
+// @Failure 500 {object} map[string]interface{} "Internal server error"
+// @Router /add [post]
 func Add(ctx *fiber.Ctx) error {
 	service, ok := ctx.Locals("enricherService").(*enricher.Enricher)
 	if !ok {
